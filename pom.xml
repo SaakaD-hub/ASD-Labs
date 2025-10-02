@@ -10,7 +10,7 @@
 
   <modules>
     <module>lab1-productmgmtapp</module>
-<!--    <module>lab2a-pensionapp</module>-->
-<!--    <module>lab2b-pamsapp</module>-->
+    <module>lab2a-pensionapp</module>
+    <module>lab2b-pamsapp</module>
   </modules>
 </project>

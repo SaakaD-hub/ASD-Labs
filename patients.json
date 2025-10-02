@@ -1,0 +1,46 @@
+[ {
+  "id" : 5,
+  "firstName" : "Mary",
+  "lastName" : "Washington",
+  "phoneNo" : null,
+  "email" : null,
+  "address" : "30 W Burlington",
+  "dob" : "1932-05-31",
+  "age" : 93
+}, {
+  "id" : 2,
+  "firstName" : "Ana",
+  "lastName" : "Smith",
+  "phoneNo" : null,
+  "email" : "amsith@te.edu",
+  "address" : null,
+  "dob" : "1948-12-05",
+  "age" : 76
+}, {
+  "id" : 1,
+  "firstName" : "Daniel",
+  "lastName" : "Agar",
+  "phoneNo" : "(641) 123-0009",
+  "email" : "dagar@m.as",
+  "address" : "1 N Street",
+  "dob" : "1987-01-19",
+  "age" : 38
+}, {
+  "id" : 4,
+  "firstName" : "Jeff",
+  "lastName" : "Goldbloom",
+  "phoneNo" : "(999) 165-1192",
+  "email" : "jgold@es.co.za",
+  "address" : null,
+  "dob" : "1995-02-28",
+  "age" : 30
+}, {
+  "id" : 3,
+  "firstName" : "Marcus",
+  "lastName" : "Garvey",
+  "phoneNo" : "(123) 292-0018",
+  "email" : null,
+  "address" : "4 East Ave",
+  "dob" : "2001-09-18",
+  "age" : 24
+} ]
