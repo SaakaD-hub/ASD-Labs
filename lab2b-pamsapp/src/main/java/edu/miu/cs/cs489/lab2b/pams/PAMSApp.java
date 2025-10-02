@@ -25,6 +25,11 @@ public class PAMSApp {
         mapper.writeValue(new File("patients.json"), patients);
 
         System.out.println("✅ Patients exported to patients.json");
+        // Print to console
+        System.out.println("=== Patients (sorted by age DESC) ===");
+        System.out.println(mapper.writeValueAsString(patients));
+
+        System.out.println("✅ Patients exported to patients.json");
     }
 
     private static List<Patient> loadPatients() {
