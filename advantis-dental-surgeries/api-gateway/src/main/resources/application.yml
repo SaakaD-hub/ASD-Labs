@@ -1,0 +1,80 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: optional:configserver:http://localhost:8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+# 🧭 ROUTES CONFIGURATION
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+
+        # Patient Service
+        - id: patient-service
+          uri: lb://patient-service
+          predicates:
+            - Path=/api/v1/patients/**, /api/v1/patient/**
+          filters:
+            - AddResponseHeader=X-Service, Patient-Service
+
+        # Dentist Service
+        - id: dentist-service
+          uri: lb://dentist-service
+          predicates:
+            - Path=/api/v1/dentists/**
+          filters:
+            - AddResponseHeader=X-Service, Dentist-Service
+
+        # Appointment Service
+        - id: appointment-service
+          uri: lb://appointment-service
+          predicates:
+            - Path=/api/v1/appointments/**
+          filters:
+            - AddResponseHeader=X-Service, Appointment-Service
+
+        # Billing Service
+        - id: billing-service
+          uri: lb://billing-service
+          predicates:
+            - Path=/api/v1/bills/**
+          filters:
+            - AddResponseHeader=X-Service, Billing-Service
+
+        # Surgery Service
+        - id: surgery-service
+          uri: lb://surgery-service
+          predicates:
+            - Path=/api/v1/surgeries/**
+          filters:
+            - AddResponseHeader=X-Service, Surgery-Service
+
+        # Notification Service
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v1/notifications/**
+          filters:
+            - AddResponseHeader=X-Service, Notification-Service
+
+        # Auth Service
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+          filters:
+            - AddResponseHeader=X-Service, Auth-Service

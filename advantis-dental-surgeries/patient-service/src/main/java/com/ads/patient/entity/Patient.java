@@ -5,11 +5,12 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "patients")
+@Table(name = "patient")
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "patient_id")
     private String id;
 
     private String firstName;

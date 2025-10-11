@@ -3,11 +3,12 @@ package com.ads.dentist.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "dentists")
+@Table(name = "dentist")
 public class Dentist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "dentist_id")
     private String id;
 
     private String firstName;
