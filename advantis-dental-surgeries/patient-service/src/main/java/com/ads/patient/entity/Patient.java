@@ -4,6 +4,14 @@ package com.ads.patient.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import com.ads.patient.entity.Address;
+
+
+
 @Entity
 @Table(name = "patient")
 public class Patient {
@@ -12,12 +20,24 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "patient_id")
     private String id;
-
+    @NotBlank(message = "First name is required")
+    @Column(nullable = false)
     private String firstName;
+    @NotBlank(message = "Last name is required")
+    @Column(nullable = false)
     private String lastName;
+    @NotBlank(message = "Gender should be specified")
+    private String gender;
+    //@NotEmpty(message = "Phone number cannot be empty")
+    @Column(nullable = false)
     private String phone;
+    @NotEmpty(message = "Email cannot be empty")
     private String email;
-    private String address;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @NotNull(message = "Address cannot be empty")
+    private Address address;
+    @NotNull(message = "Date of Birth is required")
     private LocalDate dob;
 
     public String getId() { return id; }
@@ -35,8 +55,21 @@ public class Patient {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public LocalDate getDob() { return dob; }
     public void setDob(LocalDate dob) { this.dob = dob; }

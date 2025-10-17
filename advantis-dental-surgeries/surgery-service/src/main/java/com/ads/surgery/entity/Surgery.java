@@ -1,7 +1,9 @@
 package com.ads.surgery.entity;
 
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import com.ads.surgery.entity.Address;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +18,9 @@ public class Surgery {
     private String procedureType;
     private LocalDateTime scheduledAt;
     private String status;           // PLANNED | IN_PROGRESS | COMPLETED | CANCELED
-    private List<String> notes;      // Dynamic document content
+    private List<String> notes;
+    // Embedded Address (no @OneToOne or FK needed)
+    private Address address;
 
     // Getters & Setters
     public String getId() { return id; }
