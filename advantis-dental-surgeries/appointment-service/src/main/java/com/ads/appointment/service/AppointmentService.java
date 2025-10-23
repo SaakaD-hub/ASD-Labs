@@ -32,15 +32,21 @@ public class AppointmentService {
         return repo.findById(id);
     }
 
-    public Appointment cancelAppointment(String id) {
-        Appointment a = repo.findById(id).orElseThrow(() -> new RuntimeException("Appointment not found"));
-        a.setStatus("CANCELED");
-        repo.save(a);
-        kafka.send("appointment.canceled", a);
-        return a;
+    // ✅ NEW: Get by patient
+    public List<Appointment> getByPatient(String patientId) {
+        return repo.findByPatientId(patientId);
     }
 
     public List<Appointment> getByDentist(String dentistId) {
         return repo.findByDentistId(dentistId);
+    }
+
+    public Appointment cancelAppointment(String id) {
+        Appointment a = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+        a.setStatus("CANCELED");
+        repo.save(a);
+        kafka.send("appointment.canceled", a);
+        return a;
     }
 }

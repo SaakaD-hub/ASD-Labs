@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/appointments")
+@RequestMapping("/api/v1/appointments")  // ✅ Changed from /appointments
 public class AppointmentController {
 
     @Autowired
@@ -16,7 +16,7 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<Appointment> create(@RequestBody Appointment a) {
-        return ResponseEntity.ok(service.createAppointment(a));
+        return ResponseEntity.status(201).body(service.createAppointment(a));
     }
 
     @GetMapping
@@ -31,13 +31,19 @@ public class AppointmentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}/cancel")
-    public ResponseEntity<Appointment> cancel(@PathVariable String id) {
-        return ResponseEntity.ok(service.cancelAppointment(id));
+    // ✅ NEW: Get by patient
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<Appointment>> getByPatient(@PathVariable String patientId) {
+        return ResponseEntity.ok(service.getByPatient(patientId));
     }
 
     @GetMapping("/dentist/{dentistId}")
     public ResponseEntity<List<Appointment>> getByDentist(@PathVariable String dentistId) {
         return ResponseEntity.ok(service.getByDentist(dentistId));
+    }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<Appointment> cancel(@PathVariable String id) {
+        return ResponseEntity.ok(service.cancelAppointment(id));
     }
 }

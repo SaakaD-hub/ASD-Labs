@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dentists")
+@RequestMapping("/api/v1/dentists")
 public class DentistController {
 
     @Autowired
@@ -17,7 +17,7 @@ public class DentistController {
 
     @PostMapping
     public ResponseEntity<Dentist> create(@RequestBody Dentist d) {
-        return ResponseEntity.ok(service.createDentist(d));
+        return ResponseEntity.status(201).body(service.createDentist(d));
     }
 
     @GetMapping

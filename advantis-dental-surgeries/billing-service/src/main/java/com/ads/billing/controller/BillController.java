@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bills")
+@RequestMapping("/api/v1/bills")  // ✅ Correct mapping
 public class BillController {
 
     @Autowired
@@ -17,7 +17,7 @@ public class BillController {
 
     @PostMapping
     public ResponseEntity<Bill> create(@RequestBody Bill bill) {
-        return ResponseEntity.ok(service.create(bill));
+        return ResponseEntity.status(201).body(service.create(bill));
     }
 
     @GetMapping
@@ -32,9 +32,14 @@ public class BillController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // ✅ Get bills by patient
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<Bill>> getByPatient(@PathVariable String patientId) {
+        return ResponseEntity.ok(service.getByPatient(patientId));
+    }
+
     @PutMapping("/{id}/pay")
     public ResponseEntity<Bill> pay(@PathVariable String id) {
         return ResponseEntity.ok(service.payBill(id));
     }
 }
-

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8050
 
 spring:
   application:
@@ -7,23 +7,27 @@ spring:
   config:
     import: optional:configserver:http://localhost:8888
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-
-# 🧭 ROUTES CONFIGURATION
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
-      routes:
 
-        # Patient Service
+      routes:
+        # ==========================================
+        # ✅ AUTH SERVICE (JWT LOGIN & REGISTER)
+        # ==========================================
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - AddResponseHeader=X-Service, Auth-Service
+
+        # ==========================================
+        # ✅ PATIENT SERVICE
+        # ==========================================
         - id: patient-service
           uri: lb://patient-service
           predicates:
@@ -31,7 +35,9 @@ eureka:
           filters:
             - AddResponseHeader=X-Service, Patient-Service
 
-        # Dentist Service
+        # ==========================================
+        # ✅ DENTIST SERVICE
+        # ==========================================
         - id: dentist-service
           uri: lb://dentist-service
           predicates:
@@ -39,7 +45,9 @@ eureka:
           filters:
             - AddResponseHeader=X-Service, Dentist-Service
 
-        # Appointment Service
+        # ==========================================
+        # ✅ APPOINTMENT SERVICE
+        # ==========================================
         - id: appointment-service
           uri: lb://appointment-service
           predicates:
@@ -47,7 +55,9 @@ eureka:
           filters:
             - AddResponseHeader=X-Service, Appointment-Service
 
-        # Billing Service
+        # ==========================================
+        # ✅ BILLING SERVICE
+        # ==========================================
         - id: billing-service
           uri: lb://billing-service
           predicates:
@@ -55,7 +65,9 @@ eureka:
           filters:
             - AddResponseHeader=X-Service, Billing-Service
 
-        # Surgery Service
+        # ==========================================
+        # ✅ SURGERY SERVICE
+        # ==========================================
         - id: surgery-service
           uri: lb://surgery-service
           predicates:
@@ -63,7 +75,9 @@ eureka:
           filters:
             - AddResponseHeader=X-Service, Surgery-Service
 
-        # Notification Service
+        # ==========================================
+        # ✅ NOTIFICATION SERVICE
+        # ==========================================
         - id: notification-service
           uri: lb://notification-service
           predicates:
@@ -71,10 +85,22 @@ eureka:
           filters:
             - AddResponseHeader=X-Service, Notification-Service
 
-        # Auth Service
-        - id: auth-service
-          uri: lb://auth-service
+        # ==========================================
+        # ✅ OFFICE MANAGER SERVICE
+        # ==========================================
+        - id: office-manager-service
+          uri: lb://office-manager-service
           predicates:
-            - Path=/api/v1/auth/**
+            - Path=/api/v1/manager/**
           filters:
-            - AddResponseHeader=X-Service, Auth-Service
+            - AddResponseHeader=X-Service, Office-Manager-Service
+
+# ==========================================
+# ✅ EUREKA DISCOVERY CLIENT CONFIGURATION
+# ==========================================
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka/
+    register-with-eureka: true
+    fetch-registry: true

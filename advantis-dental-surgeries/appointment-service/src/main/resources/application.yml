@@ -4,21 +4,36 @@ server:
 spring:
   application:
     name: appointment-service
+
   config:
     import: optional:configserver:http://localhost:8888
+
   datasource:
-    url: jdbc:postgresql://localhost:5434/appointmentdb
+    url: jdbc:postgresql://localhost:5432/appointmentdb
     username: postgres
-    password: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
   kafka:
-    bootstrap-servers: localhost:9092  # Kafka KRaft broker
+    bootstrap-servers: localhost:9092
+
+  # ✅ Disable Kafka temporarily if it keeps failing
+  # autoconfigure:
+  #   exclude:
+  #     - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
 
 eureka:
   client:
+    enabled: false  # ✅ Disable Eureka for local testing
     service-url:
       defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/adsweb/api/v1/patients")
+@RequestMapping("/api/v1/auth/patients")
 public class PatientController {
 
     @Autowired
@@ -20,8 +20,8 @@ public class PatientController {
         Patient patient = service.createPatient(p);
         return ResponseEntity.ok(patient);
     }
-//Get All patients  sorted by lastname
-     @GetMapping
+    //Get All patients  sorted by lastname
+    @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients() {
         return ResponseEntity.ok(service.findAllSortedByLastName());
     }
@@ -30,12 +30,18 @@ public class PatientController {
     public ResponseEntity<Patient> get(@PathVariable String id) {
         Patient patient = service.findByIdOrThrow(id);
 //                .map(ResponseEntity::ok)
-                return ResponseEntity.ok(patient);
+        return ResponseEntity.ok(patient);
+    }
+    @PostMapping("/get")
+    public ResponseEntity<Patient> getPost(@RequestParam String id) {
+        Patient patient = service.findByIdOrThrow(id);
+//                .map(ResponseEntity::ok)
+        return ResponseEntity.ok(patient);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Patient> update(@PathVariable String id, @RequestBody Patient updated) {
-        return ResponseEntity.ok(service.updatePatient(id, updated));
+    @PostMapping("/update")
+    public ResponseEntity<Patient> update(@RequestBody Patient updated) {
+        return ResponseEntity.ok(service.updatePatient( updated));
     }
 
     @DeleteMapping("/{id}")

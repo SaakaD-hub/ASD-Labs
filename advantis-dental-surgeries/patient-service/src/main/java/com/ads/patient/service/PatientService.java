@@ -3,12 +3,13 @@ package com.ads.patient.service;
 import com.ads.patient.entity.Patient;
 import com.ads.patient.exception.PatientNotFoundException;
 import com.ads.patient.repository.PatientRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Service
 public class PatientService {
 
@@ -35,8 +36,8 @@ public class PatientService {
                 .orElseThrow(()-> new PatientNotFoundException(id));
     }
 
-    public Patient updatePatient(String id, Patient updated) {
-        return repo.findById(id)
+    public Patient updatePatient( Patient updated) {
+        return repo.findById(updated.getId())
                 .map(existing -> {
                     existing.setFirstName(updated.getFirstName());
                     existing.setLastName(updated.getLastName());
@@ -62,11 +63,33 @@ public class PatientService {
 
     public String deletePatient(String id) {
         Patient patient = repo.findById(id)
-                .orElseThrow(() -> new PatientNotFoundException(" Patient with ID" + id + " not found"));
+                .orElseThrow(() -> new PatientNotFoundException("Patient with ID " + id + " not found"));
         repo.delete(patient);
-        kafka.send("patient.deleted", id);
+
+        kafka.send("patient.deleted", id)
+                .whenComplete((result, ex) -> {
+                    if (ex == null) {
+                        log.info("✅ Kafka message sent for patient.deleted: {}", id);
+                    } else {
+                        log.error("❌ Kafka send failed for patient.deleted: {}", ex.getMessage());
+                    }
+                });
+
         return "Patient with ID " + id + " has been deleted.";
     }
+
+//    public String deletePatient(String id) {
+//        Patient patient = repo.findById(id)
+//                .orElseThrow(() -> new PatientNotFoundException(" Patient with ID" + id + " not found"));
+//        repo.delete(patient);
+//        try {
+//            kafka.send("patient.deleted", id);
+//        } catch (Exception e) {
+//            log.error("⚠️ Kafka send failed for patient.deleted: {}", e.getMessage());
+//        }
+//        //kafka.send("patient.deleted", id);
+//        return "Patient with ID " + id + " has been deleted.";
+//    }
     public List<Patient> searchPatients(String searchString) {
         return repo.searchPatients(searchString);
     }

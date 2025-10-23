@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/patientdb
     username: postgres
-    password: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
     jackson:
       deserialization:

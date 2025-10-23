@@ -7,7 +7,8 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://root:root@localhost:27017/surgerydb?authSource=admin&authMechanism=SCRAM-SHA-1
+      uri: mongodb://localhost:27017/surgerydb
+
 
   config:
     import: optional:configserver:http://localhost:8888
@@ -15,7 +16,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8762/eureka/
 
 kafka:
   bootstrap-servers: localhost:9092

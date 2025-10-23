@@ -1,24 +1,38 @@
+
 server:
   port: 8082
 
 spring:
   application:
     name: dentist-service
+
+  # ✅ MISSING: This line was causing the error
   config:
     import: optional:configserver:http://localhost:8888
+
   datasource:
-    url: jdbc:postgresql://localhost:5433/dentistdb
+    url: jdbc:postgresql://localhost:5432/dentistdb
     username: postgres
-    password: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-  kafka:
-    bootstrap-servers: localhost:9092  # Kafka KRaft
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # ✅ Disable Kafka for presentation
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
 
 eureka:
   client:
+    enabled: false
     service-url:
       defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false

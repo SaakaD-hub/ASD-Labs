@@ -20,8 +20,9 @@ public class DentistService {
 
     public Dentist createDentist(Dentist d) {
         Dentist saved = repo.save(d);
-        kafka.send("dentist.created", saved);
-        kafka.send("appointment.limit.check", saved.getId()); // Notify appointment service
+       // kafka.send("dentist.created", saved);
+        // kafka.send("appointment.limit.check", saved.getId()); // Notify appointment service
+        System.out.println("✅ Dentist created: " + saved.getId());
         return saved;
     }
 
