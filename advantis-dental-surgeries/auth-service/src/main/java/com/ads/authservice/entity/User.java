@@ -1,7 +1,11 @@
 package com.ads.authservice.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
+
+import java.time.LocalDateTime;
+
 
 @Entity
 @Data
@@ -20,5 +24,19 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private String role;
+    @Email
+    @Column(unique = true, nullable = false)  // ✅ NEW
+    private String email;
+
+    @Column(nullable = false)
+    private String role;  // ROLE_MANAGER, ROLE_DENTIST, ROLE_PATIENT
+
+    // ✅ NEW - Additional fields
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private Boolean enabled = true;
+
+    @Column(updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

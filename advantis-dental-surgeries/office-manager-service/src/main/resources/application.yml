@@ -9,9 +9,9 @@ spring:
     import: optional:configserver:http://localhost:8888
 
   datasource:
-    url: jdbc:postgresql://localhost:5437/officemanagerdb
+    url: jdbc:postgresql://localhost:5432/authdb
     username: postgres
-    password: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
 
   jpa:
